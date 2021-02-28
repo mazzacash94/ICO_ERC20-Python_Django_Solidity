@@ -6,9 +6,9 @@ from .forms import registrationForm
 from .utils import *
 from .models import Wallet, History
 from .forms import offerForm
+from rest_framework import viewsets
 from .serializers import HistorySerializer
 from django.contrib.auth.models import User
-from rest_framework import viewsets
 
 
 class HistoryViewSet(viewsets.ModelViewSet):
@@ -44,7 +44,7 @@ def registration(request):
             users = User.objects.order_by("-date_joined")
             lastUser = User.objects.get(username=users[0])
             account = newAccount()
-            Wallet.objects.create(user=lastUser, address=account[0], privateKey=account[1])
+            Wallet.objects.create(user=lastUser, address=account.address, privateKey=account.key)
             return redirect('../')
 
         else:

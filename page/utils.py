@@ -70,5 +70,5 @@ def getBalanceToken(address):
 
 
 def totalSupply():
-    supply = contract.functions.balanceOf('0x960562B0220Aa6058fDfd8eCd135843c6704cc5f').call()
+    supply = contract.functions.balanceOf(contractCreator).call()
     return supply
