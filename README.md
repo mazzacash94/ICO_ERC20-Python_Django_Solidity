@@ -4,6 +4,7 @@ Steps:
 
 - clone the repository;
 - install requirements.txt;
+- register to Infura API to get your ropsten Token and enter it in utils.py
 - run python manage.py runserver;
 - register an account;
 - login;
