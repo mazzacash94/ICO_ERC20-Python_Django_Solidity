@@ -27,7 +27,7 @@ def buyToken(key, amount, address, value):
         ), key)
         tx1 = web3.eth.sendRawTransaction(signedTx1.rawTransaction)
         txId1 = web3.toHex(tx1)
-        web3.eth.waitForTransactionReceipt(txId)
+        web3.eth.waitForTransactionReceipt(txId1)
         print(f"Transaction Success! {txId1}")
         transaction = contract.functions.transfer(address, amount).buildTransaction({
             'from': contractCreator,
