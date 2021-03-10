@@ -446,7 +446,29 @@
 
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 
+    <script type="text/javascript">
 
+        const value = document.getElementById("sendButton").value
+        const sendTransaction = document.getElementById("sendButton")
+        //Sending Ethereum to an address
+        sendTransaction.addEventListener('click', () => {
+          ethereum
+            .request({
+              method: 'eth_sendTransaction',
+              params: [
+                {
+                  from: ethereum.selectedAddress,
+                  to: '{{contractAddress}}',
+                  value: '0x29a2241af62c0000',
+                  data: '0xa9059cbb000000000000000000000000ef0270b1cf6e7d3c8eb0caf6d61953a6d9559969000000000000000000000000000000000000000000000000000000000000000a'
+                },
+              ],
+            })
+            .then((txHash) => console.log(txHash))
+            .catch((error) => console.error);
+        });
+
+    </script>
 
         <script type="text/javascript">
 
