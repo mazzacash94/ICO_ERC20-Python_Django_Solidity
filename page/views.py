@@ -5,7 +5,7 @@ from django.contrib import messages
 from .forms import registrationForm
 from .utils import *
 from .models import Wallet, History
-from .forms import offerForm
+from .forms import purchaseForm
 from rest_framework import viewsets
 from .serializers import HistorySerializer
 from django.contrib.auth.models import User
@@ -41,10 +41,6 @@ def registration(request):
         if form.is_valid():
 
             form.save()
-            users = User.objects.order_by("-date_joined")
-            lastUser = User.objects.get(username=users[0])
-            account = newAccount()
-            Wallet.objects.create(user=lastUser, address=account.address, privateKey=account.key)
             return redirect('../')
 
         else:
@@ -70,24 +66,30 @@ def logout(request):
 def home(request):
 
     user = request.user
-    form = offerForm(request.POST)
+    form = purchaseForm(request.POST)
     supply = int(totalSupply())
     percentSupply = float(supply / 10)
 
     if user.is_authenticated:
-        wallet = Wallet.objects.get(user=user)
-        balanceEther = getBalanceEther(wallet.address)
-        balanceToken = getBalanceToken(wallet.address)
         if request.method == "POST":
             if form.is_valid():
                 offer = request.POST.get('offer')
-                tx = buyToken(wallet.privateKey, int(offer), wallet.address, int(offer)/10)
+                address = request.POST.get('address')
+                tx = buyToken(int(offer), address)
                 messages.info(request, tx)
-                return redirect("/")
         else:
-            form = offerForm()
+            form = purchaseForm()
 
-        return render(request, 'index.html', {'form': form, 'wallet': wallet, 'balanceEther': balanceEther,
-                      'balanceToken': balanceToken, 'supply': supply, 'percentSupply': percentSupply})
+        return render(request, 'index.html', {'form': form, 'supply': supply, 'percentSupply': percentSupply, 'contractCreator': contractCreator, 'contractAddress': contractAddress})
 
-    return render(request, 'index.html', {'form': form, 'supply': supply, 'percentSupply': percentSupply})
+    return render(request, 'index.html', {'form': form, 'supply': supply, 'percentSupply': percentSupply, 'contractCreator': contractCreator, 'contractAddress': contractAddress})
+
+def faucet(request):
+
+    if request.method == 'POST':
+        getEther(request.POST.get("address"), request.POST.get('ether'))
+        return redirect("../")
+    return render(request, 'faucet.html')
+
+
+

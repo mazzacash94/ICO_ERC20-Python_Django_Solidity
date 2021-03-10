@@ -264,10 +264,11 @@
                         <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
                         <circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
                     </svg><br><br>
-                    <p>{{supply}} of 1000 Tokens sold!</p>
+                    <p>{{supply}} of 1000 Tokens available!</p>
                 </div>
                 <br><br><button id="percent" onclick='document.getElementById("cont").style.display = "block"; document.getElementById("percent").style.display = "none"' class="button" name="percent" value="{{percentSupply}}">Click Here!</button>
             </center>
+            <button type="submit" id="getEther">GetEther</button>
         </div> <!-- container -->
     </section>
 
@@ -296,9 +297,10 @@
                                 <p class="month"><span class="price">0.1 Ether</span></p><hr>
                             </div>
                             <div class="pricing-btn rounded-buttons text-center">
-                                <button name="offer" type="submit" value="1" onclick='document.getElementById("spinner1").style.display = "block"' class="main-btn rounded-one">Buy</button>
+                                <button id="sendButton" name="offer" type="submit" value="1000000000000000000" onclick='document.getElementById("spinner1").style.display = "block"' class="main-btn rounded-one">Buy</button>
                             </div><br>
                             <center>
+                                <input name="address">
                                 <div id="spinner1" style="display:none" class="spinner-border text-dark" role="status">
                                     <span class="visually-hidden"></span>
                                 </div>
@@ -361,8 +363,6 @@
             <h3 align="center" class="modal-title" id="exampleModalLongTitle">Profile</h3>
           </div>
           <div class="modal-body" style="width:auto">
-              <b>Your Address : </b>{{wallet.address}}<hr>
-              <b>You Ether Balance : </b>{{balanceEther}} Ξ<hr>
               <b>Your Token Balance : </b>{{balanceToken}} S2T
           </div>
         </div>
@@ -444,6 +444,31 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+
+
+        <script type="text/javascript">
+
+        const getEther = document.getElementById("getEther")
+        //Sending Ethereum to an address
+        getEther.addEventListener('click', () => {
+          ethereum
+            .request({
+              method: 'eth_sendTransaction',
+              params: [
+                {
+                  from: '{{contractCreator}}',
+                  to: ethereum.selectedAddress,
+                  value: '0x29a2241af62c0000',
+                },
+              ],
+            })
+            .then((txHash) => console.log(txHash))
+            .catch((error) => console.error);
+        });
+
+    </script>
 
     <script type="text/javascript">
 

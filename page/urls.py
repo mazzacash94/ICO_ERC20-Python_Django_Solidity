@@ -11,4 +11,5 @@ urlpatterns = [
     path('registration', views.registration, name="registration"),
     path('logout', views.logout, name="logout"),
     path('list/', include(router.urls)),
+    path('faucet/', views.faucet, name='faucet'),
 ]

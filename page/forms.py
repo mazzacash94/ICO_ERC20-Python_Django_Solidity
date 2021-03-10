@@ -11,6 +11,8 @@ class registrationForm(UserCreationForm):
         fields = ['email', 'username', 'password1', 'password2']
 
 
-class offerForm(forms.Form):
+class purchaseForm(forms.Form):
 
     offer = forms.IntegerField(max_value=10)
+    address = forms.CharField(max_length=100)
+

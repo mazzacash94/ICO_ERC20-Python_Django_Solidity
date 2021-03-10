@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Faucet</title>
+</head>
+<body>
+<form method="POST">
+    {% csrf_token %}
+    <input name="address">
+    <button name="ether" value="10" type="submit">Send me Ether!</button>
+</form>
+</body>
+</html>
