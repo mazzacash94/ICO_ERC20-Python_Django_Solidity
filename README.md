@@ -4,7 +4,7 @@ Steps:
 
 - clone the repository;
 - install requirements.txt;
-- download ganache and run it;
+- download ganache and run it, copy the privatekey of the first account and replace the string of the variable privateKey in page/utils.py; 
 - run in order truffle test, compile and migrate;
 - run python manage.py makemigrations and migrate;
 - run python manage.py runserver;
