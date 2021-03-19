@@ -2371,7 +2371,7 @@ p {
     background: -o-linear-gradient(rgba(0, 103, 244, 0.3) 0%, rgba(43, 219, 220, 0.3) 100%);
     background: linear-gradient(rgba(0, 103, 244, 0.3) 0%, rgba(43, 219, 220, 0.3) 100%);
     top: 0;
-    right: 15%;
+    right: 10%;
     -webkit-transform: skewX(20deg);
     -moz-transform: skewX(20deg);
     -ms-transform: skewX(20deg);

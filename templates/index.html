@@ -1,9 +1,11 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+
+<html>
 
 <head>
+
     <meta charset="utf-8">
     
     <!--====== Title ======-->
@@ -32,6 +34,9 @@
     
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+     <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
     <!-- CSS only -->
 
@@ -127,42 +132,41 @@
             <div class="row">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg">
-                        <h1 class="navbar-brand"><span style="color:ORANGE; font-size: 30px; font-style: italic;">ICO PROJECT</span></h1>
+                        <h1 class="navbar-brand"><span style="color:ORANGE; font-size: 30px; font-style: italic;">S2T ICO</span></h1>
+
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTwo" aria-controls="navbarTwo" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="toggler-icon"></span>
                             <span class="toggler-icon"></span>
                             <span class="toggler-icon"></span>
                         </button>
-                        {% if user.is_authenticated %}
+
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarTwo">
                             <ul class="navbar-nav m-auto">
+                                {% if user.is_authenticated %}
                                 <li class="nav-item active"><a class="page-scroll" href="#home">Home</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#services">About</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#portfolio">Progress</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#pricing">Purchase</a></li>
-                            </ul>
-                        </div>
-                        <div class="navbar-btn d-none d-sm-inline-block">
-                            <ul>
-                                <li><a type="button" data-toggle="modal" data-target="#exampleModalCenter" class="solid">Hello, {{user}}!</a></li>
-                                <li><a class="solid" href="logout">Logout</a></li>
-                                </ul>
-                        </div>
-                        {% else %}
-                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarTwo">
-                            <ul class="navbar-nav m-auto">
+                                {% else %}
                                 <li class="nav-item active"><a class="page-scroll" href="#home">Home</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#services">About</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#portfolio">Progress</a></li>
+                                {% endif %}
                             </ul>
                         </div>
+
                         <div class="navbar-btn d-none d-sm-inline-block">
                             <ul>
+                                {% if user.is_authenticated %}
+                                <li><a class="solid" style="cursor: pointer" onclick="popup('profile',250,300)">Hello, {{user}}!</a></li>
+                                <li><a class="solid" href="logout">Logout</a></li>
+                                {% else %}
                                 <li><a class="solid" href="login">Login</a></li>
-                                <li><a class="solid" href="registration">Register</a></li>
+                                <li><a class="solid" href="registration">Registration</a></li>
+                                {% endif %}
                             </ul>
                         </div>
-                        {% endif %}
+
                     </nav> <!-- navbar -->
                 </div>
             </div> <!-- row -->
@@ -177,6 +181,7 @@
         <div id="carouselThree" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
+
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-6">
@@ -186,11 +191,13 @@
                             </div>
                         </div> <!-- row -->
                     </div> <!-- container -->
+
                     <div class="slider-image-box d-none d-lg-flex align-items-end">
                         <div class="slider-image">
                             <img src="{% static 'assets/images/slider/blockchain.png' %}">
                         </div> <!-- slider-imgae -->
                     </div> <!-- slider-imgae box -->
+
                 </div> <!-- carousel-item -->
             </div>
         </div>
@@ -198,10 +205,12 @@
 
     <!--====== SLIDER PART ENDS ======-->
     
-    <!--====== FEATRES TWO PART START ======-->
+    <!--====== FEATURES TWO PART START ======-->
 
     <section id="services" class="features-area">
+
         <div class="container">
+
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-10">
                     <div class="section-title text-center pb-10">
@@ -210,54 +219,74 @@
                     </div> <!-- row -->
                 </div>
             </div> <!-- row -->
+
             <div class="row justify-content-center">
+
                 <div class="col-lg-4 col-md-7 col-sm-9">
                     <div class="single-features mt-40">
-                        <div class="features-title-icon d-flex justify-content-between">
-                            <h4 class="features-title"><a href="#">Buy Tokens</a></h4>
-                            <center><img class="shape" src="{% static 'assets/images/token.png' %}"></center>
-                        </div>
-                        <div class="features-content">
-                            <p class="text">Buy tokens choosing between 3 different kind of offers!</p>
-                        </div>
+                        <center>
+                            <a href="faucet">
+                                <div align="middle" class="features-title-icon d-flex justify-content-between">
+                                    <h4 class="features-title">Faucet</h4>
+                                </div><hr>
+                                <img class="shape" src="{% static 'assets/images/faucet.png' %}"><hr>
+                                <div class="features-content">
+                                    <p>Get ether to test the platform!</p>
+                                </div>
+                            </a>
+                        </center>
                     </div> <!-- single features -->
                 </div>
+
                 <div class="col-lg-4 col-md-7 col-sm-9">
                     <div class="single-features mt-40">
-                        <div class="features-title-icon d-flex justify-content-between">
-                            <h4 class="features-title"><a href="#">Personal Wallet</a></h4>
-                            <center><img class="shape" src="{% static 'assets/images/wallet.png' %}"></center>
-                        </div>
-                        <div class="features-content">
-                            <p class="text">We automatically provide you a personal wallet when you register an account!</p>
-                        </div>
+                        <center>
+                            <button style="border: none; background: none" onclick="enableEthereum()">
+                                <div align="middle" class="features-title-icon d-flex justify-content-between">
+                                    <h4 class="features-title">Metamask</h4>
+                                </div><hr>
+                                <img class="shape" src="{% static 'assets/images/metamask.png' %}"><hr>
+                                <div class="features-content">
+                                    <p>Connect to Metamask!</p>
+                                </div>
+                            </button>
+                        </center>
                     </div> <!-- single features -->
                 </div>
+
                 <div class="col-lg-4 col-md-7 col-sm-9">
                     <div class="single-features mt-40">
-                        <div class="features-title-icon d-flex justify-content-between">
-                            <h4 class="features-title"><a href="#">Sale Progress</a></h4>
-                            <img class="shape" src="{% static 'assets/images/progress.webp' %}">
-                        </div>
-                        <div class="features-content">
-                            <p class="text">Informations about quantity of tokens available!</p>
-                        </div>
+                        <center>
+                            <a href="list/transactions">
+                                <div align="middle" class="features-title-icon d-flex justify-content-between">
+                                    <h4 class="features-title">Transactions</h4>
+                                </div><hr>
+                                <img class="shape" src="{% static 'assets/images/wallet.png' %}"><hr>
+                                <div class="features-content">
+                                    <p>Check complete transactions!</p>
+                                </div>
+                            </a>
+                        </center>
                     </div> <!-- single features -->
                 </div>
+
             </div> <!-- row -->
         </div> <!-- container -->
     </section>
 
-    <!--====== FEATRES TWO PART ENDS ======-->
+    <!--====== FEATURES TWO PART ENDS ======-->
     
     <!--====== PORTFOLIO PART START ======-->
 
     <section id="portfolio" class="portfolio-area portfolio-four pb-100">
+
         <div class="container">
+
             <div class="section-title text-center pb-10">
                 <h3 class="title">Progress</h3>
                 <p class="text">Keep an eye on token availability in real time!</p>
             </div> <!-- row -->
+
             <center>
                 <div id="cont" data-pct="100">
                     <svg id="svg" width="200" height="200" viewPort="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -266,18 +295,21 @@
                     </svg><br><br>
                     <p>{{supply}} of 1000 Tokens available!</p>
                 </div>
-                <br><br><button id="percent" onclick='document.getElementById("cont").style.display = "block"; document.getElementById("percent").style.display = "none"' class="button" name="percent" value="{{percentSupply}}">Click Here!</button>
+                <br><br><button id="percent" onclick='document.getElementById("cont").style.display = "block"; document.getElementById("percent").style.display = "none"' class="button" name="percent" value="{{percentage}}">Click Here!</button>
             </center>
-            <button type="submit" id="getEther">GetEther</button>
+
         </div> <!-- container -->
+
     </section>
 
     <!--====== PORTFOLIO PART ENDS ======-->
     {% if user.is_authenticated %}
-    <!--====== PRINICNG START ======-->
+    <!--====== PRICING START ======-->
 
-    <section id="pricing" class="pricing-area ">
+    <section id="pricing" class="pricing-area">
+
         <div class="container">
+
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-10">
                     <div class="section-title text-center pb-25">
@@ -286,21 +318,25 @@
                     </div> <!-- section title -->
                 </div>
             </div> <!-- row -->
+
             <form method="POST">
+                {% csrf_token %}
                 <div class="row justify-content-center">
-                    {% csrf_token %}
+
                     <div class="col-lg-4 col-md-7 col-sm-9">
                         <div class="pricing-style mt-30">
                             <div class="pricing-icon text-center"></div>
                             <div class="pricing-header text-center">
-                                <h5 class="sub-title">1 Token</h5><hr>
-                                <p class="month"><span class="price">0.1 Ether</span></p><hr>
+                                <h5 class="sub-title">10 Token</h5><hr>
+                                <p class="month"><span class="price">1 Ether</span></p>
                             </div>
                             <div class="pricing-btn rounded-buttons text-center">
-                                <button id="sendButton" name="offer" type="submit" value="1000000000000000000" onclick='document.getElementById("spinner1").style.display = "block"' class="main-btn rounded-one">Buy</button>
+                                <center><input id="address" name="address" placeholder="Enter your address..." style="border-radius : 5px 5px 5px 5px; text-align: center; display: none"></center>
+                                <hr>
+                                <button id="transaction" type="button" class="main-btn rounded-one" onclick='sendEther()'>Buy</button>
+                                <center><button id="token" name="offer" value="10" type="submit" class="main-btn rounded-one" style="display: none">Get your Tokens!</button></center>
                             </div><br>
                             <center>
-                                <input name="address">
                                 <div id="spinner1" style="display:none" class="spinner-border text-dark" role="status">
                                     <span class="visually-hidden"></span>
                                 </div>
@@ -308,63 +344,32 @@
                         </div> <!-- pricing style one -->
                     </div>
 
-                    <div class="col-lg-4 col-md-7 col-sm-9">
-                        <div class="pricing-style mt-30">
-                            <div class="pricing-icon text-center"></div>
-                            <div class="pricing-header text-center">
-                                <h5 class="sub-title">5 Token</h5><hr>
-                                <p class="month"><span class="price">0.5 Ether</span></p><hr>
-                            </div>
-                            <div class="pricing-btn rounded-buttons text-center">
-                                <button name='offer' type="submit" value="5" onclick='document.getElementById("spinner2").style.display = "block"' class="main-btn rounded-one">Buy</button>
-                            </div><br>
-                            <center>
-                                <div id="spinner2" style="display:none" class="spinner-border text-dark" role="status">
-                                    <span class="visually-hidden"></span>
-                                </div>
-                            </center>
-                        </div> <!-- pricing style one -->
-                    </div>
+                </div>
+            </form>
 
-                    <div class="col-lg-4 col-md-7 col-sm-9">
-                        <div class="pricing-style mt-30">
-                            <div class="pricing-icon text-center"></div>
-                            <div class="pricing-header text-center">
-                                <h5 class="sub-title">10 Token</h5><hr>
-                                <p class="month"><span class="price">1 Ether</span></p><hr>
-                            </div>
-                            <div class="pricing-btn rounded-buttons text-center">
-                                <button name='offer' type="submit" value="10" onclick='document.getElementById("spinner3").style.display = "block"' class="main-btn rounded-one">Buy</button>
-                            </div><br>
-                            <center>
-                                <div id="spinner3" style="display:none" class="spinner-border text-dark" role="status">
-                                    <span class="visually-hidden"></span>
-                                </div>
-                            </center>
-                        </div> <!-- pricing style one -->
-                    </div>
-                </form>
-            </div> <!-- row -->
-        </div> <!-- container -->
+        </div> <!-- row -->
+
     </section>
 
     <!--====== PRINICNG ENDS ======-->
     {% else %}
     {% endif %}
     <!--====== CONTACT PART START ======-->
-
     <!--====== CONTACT PART ENDS ======-->
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="width:auto">
+
           <div class="modal-header">
             <h3 align="center" class="modal-title" id="exampleModalLongTitle">Profile</h3>
           </div>
+
           <div class="modal-body" style="width:auto">
               <b>Your Token Balance : </b>{{balanceToken}} S2T
           </div>
+
         </div>
       </div>
     </div>
@@ -387,26 +392,29 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
+
                     <div class="footer-logo text-center">
-                        <a class="mt-30" href="index.html"><img src="{% static 'assets/images/start.png' %}" alt="Logo"></a>
+                        <div class="mt-30" href="index.html"><img src="{% static 'assets/images/start.png' %}" alt="Logo"></div>
                     </div> <!-- footer logo -->
+
                     <ul class="social text-center mt-60">
                         <li><a href="https://www.facebook.com/gianmaria.mazzacash" target="-blank"><i class="lni lni-facebook-filled"></i></a></li>
                         <li><a href="https://twitter.com/kushking2209199" target="-blank"><i class="lni lni-twitter-original"></i></a></li>
                         <li><a href="https://www.instagram.com/mazzacash/" target="-blank"><i class="lni lni-instagram-original"></i></a></li>
                         <li><a href="https://www.linkedin.com/in/giovanni-maria-mazza-7232bb1ba/" target="-blank"><i class="lni lni-linkedin-original"></i></a></li>
                     </ul> <!-- social -->
+
                     <div class="footer-support text-center">
                         <span class="number">by Giovanni Maria Mazza</span>
                         <span class="mail">BlockChain Development Student</span>
                     </div>
+
                 </div>
             </div> <!-- row -->
         </div> <!-- container -->
     </section>
 
     <!--====== FOOTER PART ENDS ======-->
-    
     <!--====== BACK TOP TOP PART START ======-->
 
     <a href="#" class="back-to-top"><i class="lni lni-chevron-up"></i></a>
@@ -441,54 +449,65 @@
     <!--====== Main js ======-->
     <script src="{% static 'assets/js/main.js' %}"></script>
 
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
 
     <script type="text/javascript">
 
-        const value = document.getElementById("sendButton").value
-        const sendTransaction = document.getElementById("sendButton")
-        //Sending Ethereum to an address
-        sendTransaction.addEventListener('click', () => {
-          ethereum
-            .request({
-              method: 'eth_sendTransaction',
-              params: [
-                {
-                  from: ethereum.selectedAddress,
-                  to: '{{contractAddress}}',
-                  value: '0x29a2241af62c0000',
-                  data: '0xa9059cbb000000000000000000000000ef0270b1cf6e7d3c8eb0caf6d61953a6d9559969000000000000000000000000000000000000000000000000000000000000000a'
-                },
-              ],
-            })
-            .then((txHash) => console.log(txHash))
-            .catch((error) => console.error);
-        });
+        if (typeof window.ethereum !== 'undefined') {
+            console.log('MetaMask is installed!');
+        }
 
-    </script>
+        async function enableEthereum() {
+            await ethereum.request({ method: 'eth_requestAccounts' });
+        };
 
-        <script type="text/javascript">
+        async function sendEther() {
 
-        const getEther = document.getElementById("getEther")
-        //Sending Ethereum to an address
-        getEther.addEventListener('click', () => {
-          ethereum
-            .request({
-              method: 'eth_sendTransaction',
-              params: [
-                {
-                  from: '{{contractCreator}}',
-                  to: ethereum.selectedAddress,
-                  value: '0x29a2241af62c0000',
-                },
-              ],
-            })
-            .then((txHash) => console.log(txHash))
-            .catch((error) => console.error);
-        });
+            showProgress();
+            await ethereum.request({ method: 'eth_accounts' });
+            const address = ethereum.selectedAddress
+            try {
+              const transactionHash = await ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [
+                  {
+                    from: address,
+                    to: '{{contractCreator}}',
+                  },
+                ],
+              });
+              // Handle the result
+              console.log(transactionHash);
+              hideProgress();
+              hideButton();
+              showButton();
+              showAddress();
+            } catch (error) {
+              hideProgress();
+              console.error(error);
+            }
+        };
+
+        function showButton() {
+            document.getElementById("token").style.display = "block";
+        };
+
+        function hideButton() {
+            document.getElementById("transaction").style.display = "none";
+        };
+
+        function showProgress() {
+            document.getElementById("spinner1").style.display = "block";
+        };
+
+        function hideProgress() {
+            document.getElementById("spinner1").style.display = "none";
+        };
+
+        function showAddress() {
+            document.getElementById("address").style.display = "block";
+        };
+
 
     </script>
 
@@ -516,6 +535,14 @@
             }
         });
 
+    </script>
+
+    <script type="text/javascript">
+        function popup(url, h, w) {
+            var popTop = Math.floor((screen.height-h)/2);
+            var popLeft = Math.floor((screen.width-w)/2);
+            window.open(url, "popup", "height="+h+",width="+w+",top="+popTop+",left="+popLeft+",toolbar=no,menubar=no,status=no,scrollbars=no")
+        }
     </script>
 
     {% if messages %}

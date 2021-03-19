@@ -10,6 +10,7 @@ urlpatterns = [
     path('login', views.logIn, name="login"),
     path('registration', views.registration, name="registration"),
     path('logout', views.logout, name="logout"),
+    path('faucet', views.faucet, name="faucet"),
+    path('profile', views.profile, name="profile"),
     path('list/', include(router.urls)),
-    path('faucet/', views.faucet, name='faucet'),
 ]
