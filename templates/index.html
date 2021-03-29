@@ -36,8 +36,8 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 
      <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <!-- CSS only -->
 
     <style type="text/css">
@@ -314,7 +314,7 @@
                 <div class="col-lg-6 col-md-10">
                     <div class="section-title text-center pb-25">
                         <h3 class="title">Purchase</h3>
-                        <p class="text">Choose what offer you want to buy!</p>
+                        <p class="text">Enter how many tokens you want to buy!</p>
                     </div> <!-- section title -->
                 </div>
             </div> <!-- row -->
@@ -327,14 +327,12 @@
                         <div class="pricing-style mt-30">
                             <div class="pricing-icon text-center"></div>
                             <div class="pricing-header text-center">
-                                <h5 class="sub-title">10 Token</h5><hr>
-                                <p class="month"><span class="price">1 Ether</span></p>
+                                <p class="month"><span class="price">1 Token = 1 Ether</span></p>
                             </div>
                             <div class="pricing-btn rounded-buttons text-center">
-                                <center><input id="address" name="address" placeholder="Enter your address..." style="border-radius : 5px 5px 5px 5px; text-align: center; display: none"></center>
-                                <hr>
+                                <hr><br>
+                                <center><input id="amount" style="border-radius : 5px 5px 5px 5px; text-align : center" placeholder="Enter the amount..."></center><br><hr><br>
                                 <button id="transaction" type="button" class="main-btn rounded-one" onclick='sendEther()'>Buy</button>
-                                <center><button id="token" name="offer" value="10" type="submit" class="main-btn rounded-one" style="display: none">Get your Tokens!</button></center>
                             </div><br>
                             <center>
                                 <div id="spinner1" style="display:none" class="spinner-border text-dark" role="status">
@@ -453,6 +451,12 @@
 
     <script type="text/javascript">
 
+        const web3 = new Web3("http://127.0.0.1:7545");
+
+        const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]
+
+        const contract = new web3.eth.Contract(abi, '{{contractAddress}}');
+
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
         }
@@ -463,37 +467,38 @@
 
         async function sendEther() {
 
+            const amount = document.getElementById("amount").value
             showProgress();
             await ethereum.request({ method: 'eth_accounts' });
             const address = ethereum.selectedAddress
+
             try {
-              const transactionHash = await ethereum.request({
-                method: 'eth_sendTransaction',
-                params: [
-                  {
-                    from: address,
-                    to: '{{contractCreator}}',
-                  },
-                ],
-              });
-              // Handle the result
-              console.log(transactionHash);
-              hideProgress();
-              hideButton();
-              showButton();
-              showAddress();
-            } catch (error) {
-              hideProgress();
-              console.error(error);
-            }
-        };
-
-        function showButton() {
-            document.getElementById("token").style.display = "block";
-        };
-
-        function hideButton() {
-            document.getElementById("transaction").style.display = "none";
+                const hashTransaction = await ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [
+                          {
+                            from : ethereum.selectedAddress,
+                            to: '{{contractCreator}}',
+                            value: web3.utils.toHex(amount*10**18)
+                          },
+                    ],
+                });
+                console.log(hashTransaction);
+                const method = contract.methods.transfer(ethereum.selectedAddress, amount).send({from: "{{contractCreator}}"}).on('transactionHash', function(hash){
+                console.log("Contract : ", hash)
+                })
+                .on('receipt', function(receipt){
+                    console.log(receipt)
+                })
+                .on('error', console.error);
+                    console.log(method);
+                    hideProgress();
+                } catch (error) {
+                    hideProgress();
+                    console.error(error);
+                    alert("Something goes wrong!");
+                }
+                window.location.reload();
         };
 
         function showProgress() {
@@ -503,11 +508,6 @@
         function hideProgress() {
             document.getElementById("spinner1").style.display = "none";
         };
-
-        function showAddress() {
-            document.getElementById("address").style.display = "block";
-        };
-
 
     </script>
 

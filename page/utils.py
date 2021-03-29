@@ -10,30 +10,7 @@ abi = file['abi']
 contractAddress = file['networks']['5777']['address']
 contract = web3.eth.contract(address=contractAddress, abi=abi)
 contractCreator = web3.eth.coinbase
-privateKey = "Enter the first Ganache account's private key!"
-
-
-def buyToken(amount, address):
-    try:
-        transaction = contract.functions.transfer(address, amount).buildTransaction({
-            'gas': 100000,
-            'gasPrice': web3.eth.gasPrice,
-            'nonce': web3.eth.getTransactionCount(contractCreator)
-        })
-        print(f"Transaction Created : {transaction}")
-        signedTx = web3.eth.account.signTransaction(transaction, private_key=privateKey)
-        tx = web3.eth.sendRawTransaction(signedTx.rawTransaction)
-        txId = web3.toHex(tx)
-        web3.eth.waitForTransactionReceipt(txId)
-        print(txId)
-        print(f"Transaction Success! {txId}")
-        History.objects.create(contractTx=txId)
-        result = "Transaction Success... Check your balance!"
-        return result
-    except ValueError:
-        result = "Something went wrong, are you sure you have enough Ether in the wallet?"
-        return result
-
+privateKey = "a5674cc84bcfb4ea25216707e968aee4be658bbd587c892e3576b7379d98417d"
 
 def getEther(address, value):
     try:

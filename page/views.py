@@ -64,21 +64,12 @@ def logout(request):
 
 def home(request):
 
-    user = request.user
     supply = totalSupply()
     percentage = supply/10
-    if user.is_authenticated:
-        if request.method == "POST":
-            address = request.POST.get("address")
-            offer = request.POST.get("offer")
-            tx = buyToken(int(offer), address)
-            messages.info(request, tx)
-            return redirect("/")
-        return render(request, 'index.html', {'contractCreator': contractCreator,
-                                              'supply': supply,
-                                              'percentage': percentage})
-    return render(request, 'index.html', {'supply': supply,
-                                          'percentage': percentage})
+    return render(request, 'index.html', {'contractCreator': contractCreator,
+                                          "supply": supply,
+                                          "contractAddress": contractAddress,
+                                          "percentage": percentage,})
 
 
 def faucet(request):
