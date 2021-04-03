@@ -17,7 +17,7 @@ Steps:
 - register an account and login;
 - connect from the button in the about section;
 - get ether from the faucet page accessing in the about section or import ganache accounts to metamask;
-- go to purchase section, click on buy and complete the transaction in the metamask window;
+- go to purchase section, click on buy and complete the transaction in the metamask window (or send ether directly from the wallet thanks to the fallback function in the contract, specify gas price to 2e-7 and gaslimit to 100000 if you get error);
 - if transaction is was succesful it will appear a button with the hash of transaction which save it in a model by clicking;
 - balance (accessing by clicking on username in the navbar) and token availability will be update automatically;
 - transaction ids are serialized and visible in the Api Root of Rest Framework typing '/list' after the URL (if '127.0.0.1' > '127.0.0.1/list') or clicking on the relative button in the about section;
