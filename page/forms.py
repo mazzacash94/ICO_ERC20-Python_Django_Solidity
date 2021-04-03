@@ -9,3 +9,4 @@ class registrationForm(UserCreationForm):
         model = User
         fields = ['email', 'username', 'password1', 'password2']
 
+

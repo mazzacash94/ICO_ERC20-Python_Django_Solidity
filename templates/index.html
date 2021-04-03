@@ -3,43 +3,30 @@
 <!DOCTYPE html>
 
 <html>
-
 <head>
 
     <meta charset="utf-8">
-    
     <!--====== Title ======-->
     <title>Start2Token</title>
-    
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!--====== Favicon Icon ======-->
     <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" type="image/png">
-        
     <!--====== Magnific Popup CSS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
-        
     <!--====== Slick CSS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
-        
     <!--====== Line Icons CSS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/LineIcons.css' %}">
-        
     <!--====== Bootstrap CSS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-    
     <!--====== Default CSS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/default.css' %}">
-    
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-
      <!-- JavaScript Bundle with Popper -->
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <!-- CSS only -->
-
     <style type="text/css">
 
         .button {
@@ -98,7 +85,6 @@
     </style>
     
 </head>
-
 <body>
     <!--[if IE]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
@@ -146,7 +132,7 @@
                                 <li class="nav-item active"><a class="page-scroll" href="#home">Home</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#services">About</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#portfolio">Progress</a></li>
-                                <li class="nav-item"><a class="page-scroll" href="#pricing">Purchase</a></li>
+                                <li class="nav-item"><a id="purchase" class="page-scroll" href="#pricing">Purchase</a></li>
                                 {% else %}
                                 <li class="nav-item active"><a class="page-scroll" href="#home">Home</a></li>
                                 <li class="nav-item"><a class="page-scroll" href="#services">About</a></li>
@@ -157,8 +143,11 @@
 
                         <div class="navbar-btn d-none d-sm-inline-block">
                             <ul>
-                                {% if user.is_authenticated %}
+                                {% if user.is_authenticated and not user.is_superuser %}
                                 <li><a class="solid" style="cursor: pointer" onclick="popup('profile',250,300)">Hello, {{user}}!</a></li>
+                                <li><a class="solid" href="logout">Logout</a></li>
+                                {% elif user.is_superuser %}
+                                <li><a class="solid" style="cursor: pointer" href="admin">Hello, Admin!</a></li>
                                 <li><a class="solid" href="logout">Logout</a></li>
                                 {% else %}
                                 <li><a class="solid" href="login">Login</a></li>
@@ -293,10 +282,12 @@
                         <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
                         <circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
                     </svg><br><br>
-                    <p>{{supply}} of 1000 Tokens available!</p>
+                    <p>{{supply}} of 1000 Tokens available!</p><hr>
+                    <center><h5>The sale will end at : </h5><br>{{finish}}</center>
                 </div>
                 <br><br><button id="percent" onclick='document.getElementById("cont").style.display = "block"; document.getElementById("percent").style.display = "none"' class="button" name="percent" value="{{percentage}}">Click Here!</button>
             </center>
+
 
         </div> <!-- container -->
 
@@ -308,24 +299,27 @@
 
     <section id="pricing" class="pricing-area">
 
-        <div class="container">
+        <div class="container" id="finishSale">
 
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-10">
                     <div class="section-title text-center pb-25">
                         <h3 class="title">Purchase</h3>
-                        <p class="text">Enter how many tokens you want to buy!</p>
+                        <p class="text">Enter how many tokens you want to buy!</p><br>
+                        <form method="POST">
+                            <div class="pricing-btn rounded-buttons text-center">
+                                {% csrf_token %}
+                                <input id="hash" name="transaction" class="main-btn rounded-one" style="display:none" type="submit">
+                            </div>
+                        </form>
                     </div> <!-- section title -->
                 </div>
             </div> <!-- row -->
 
-            <form method="POST">
-                {% csrf_token %}
                 <div class="row justify-content-center">
 
                     <div class="col-lg-4 col-md-7 col-sm-9">
-                        <div class="pricing-style mt-30">
-                            <div class="pricing-icon text-center"></div>
+                        <div id="afterTx" class="pricing-style mt-30">
                             <div class="pricing-header text-center">
                                 <p class="month"><span class="price">1 Token = 1 Ether</span></p>
                             </div>
@@ -343,10 +337,7 @@
                     </div>
 
                 </div>
-            </form>
-
         </div> <!-- row -->
-
     </section>
 
     <!--====== PRINICNG ENDS ======-->
@@ -365,7 +356,7 @@
           </div>
 
           <div class="modal-body" style="width:auto">
-              <b>Your Token Balance : </b>{{balanceToken}} S2T
+              <b>Your Token Balance : </b>{{balanceToken}}
           </div>
 
         </div>
@@ -453,7 +444,7 @@
 
         const web3 = new Web3("http://127.0.0.1:7545");
 
-        const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]
+        const abi = [{"inputs":[{"internalType":"uint256","name":"daysLength","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_owner","type":"address"},{"indexed":true,"internalType":"address","name":"_spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"_value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"invester","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"tokens","type":"uint256"}],"name":"Invest","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_from","type":"address"},{"indexed":true,"internalType":"address","name":"_to","type":"address"},{"indexed":false,"internalType":"uint256","name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"endDate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"founder","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"icoState","outputs":[{"internalType":"enum Ico.State","name":"","type":"uint8"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"maxInvestment","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"minInvestment","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"startDate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"supply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"tokenPrice","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"stateMutability":"payable","type":"receive","payable":true},{"inputs":[],"name":"timeLeft","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function","constant":true},{"inputs":[],"name":"start","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"end","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"resume","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"invest","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"payable","type":"function","payable":true},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_value","type":"uint256"}],"name":"transferToken","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
         const contract = new web3.eth.Contract(abi, '{{contractAddress}}');
 
@@ -467,10 +458,10 @@
 
         async function sendEther() {
 
-            const amount = document.getElementById("amount").value
+            const amount = document.getElementById("amount").value;
             showProgress();
             await ethereum.request({ method: 'eth_accounts' });
-            const address = ethereum.selectedAddress
+            const address = ethereum.selectedAddress;
 
             try {
                 const hashTransaction = await ethereum.request({
@@ -478,27 +469,31 @@
                     params: [
                           {
                             from : ethereum.selectedAddress,
-                            to: '{{contractCreator}}',
+                            to: '{{contractAddress}}',
                             value: web3.utils.toHex(amount*10**18)
                           },
                     ],
-                });
-                console.log(hashTransaction);
-                const method = contract.methods.transfer(ethereum.selectedAddress, amount).send({from: "{{contractCreator}}"}).on('transactionHash', function(hash){
-                console.log("Contract : ", hash)
                 })
-                .on('receipt', function(receipt){
-                    console.log(receipt)
+                .then((txHash) => {
+                    web3.eth.getTransactionReceipt(txHash).then(function(){
+                    console.log(txHash);
+                    document.getElementById("afterTx").style.display = "none";
+                    document.getElementById("hash").value = txHash;
+                    document.getElementById("hash").innerHTML = "Save your transaction hash";
+                    document.getElementById("hash").style.display = "block";})
                 })
-                .on('error', console.error);
-                    console.log(method);
-                    hideProgress();
-                } catch (error) {
-                    hideProgress();
-                    console.error(error);
-                    alert("Something goes wrong!");
-                }
-                window.location.reload();
+                .then(function(receipt){
+                    console.log(receipt);
+                })
+                .then(function(confirmation){
+                    console.log(confirmation);
+                })
+                hideProgress();
+            } catch (error) {
+                hideProgress();
+                console.error(error);
+                alert("Something goes wrong! Check your balance!");
+            }
         };
 
         function showProgress() {
@@ -538,23 +533,45 @@
     </script>
 
     <script type="text/javascript">
+
+        async function getCurrentState(){
+
+            const getState = await contract.methods.icoState().call();
+
+            if (getState == "2" || getState == "3"){
+                let changelink = document.getElementById("purchase")
+                document.getElementById("pricing").style.display = "none";
+                changelink.innerHTML = "Transfer";
+                changelink.href = "transfer";
+
+            }
+        };
+
+        getCurrentState();
+
+    </script>
+
+    <script type="text/javascript">
+
         function popup(url, h, w) {
             var popTop = Math.floor((screen.height-h)/2);
             var popLeft = Math.floor((screen.width-w)/2);
             window.open(url, "popup", "height="+h+",width="+w+",top="+popTop+",left="+popLeft+",toolbar=no,menubar=no,status=no,scrollbars=no")
         }
+
     </script>
 
     {% if messages %}
         <script type="text/javascript">
+
             $(window).on('load',function(){
                 $('#myModal').modal('show');
             });
+
         </script>
     {% else %}
 
     {% endif %}
 
 </body>
-
 </html>

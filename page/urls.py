@@ -13,4 +13,6 @@ urlpatterns = [
     path('faucet', views.faucet, name="faucet"),
     path('profile', views.profile, name="profile"),
     path('list/', include(router.urls)),
+    path('admin', views.adminPanel, name="admin_panel"),
+    path('transfer', views.transferPage, name="transfer")
 ]
