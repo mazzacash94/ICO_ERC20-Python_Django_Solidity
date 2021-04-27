@@ -6,7 +6,7 @@ Steps:
 - install requirements.txt;
 - download ganache GUI and run it, copy the privatekey of the first account and replace the string of the variable privateKey in page/utils.py; 
 - enter the amount of days you want your ico to last in truffle/migrations/2_deploy_Tokens.js (variable daysLength);
-- run in order truffle test, compile and migrate;
+- run in order truffle test, compile and migrate (after npm install truffle if you haven't do before);
 - run python manage.py makemigrations and migrate;
 - run python manage.py runserver;
 - create superuser;
