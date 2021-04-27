@@ -13,3 +13,4 @@ contract("Ico", async accounts => {
         let balance = await instance.balanceOf(accounts[0]);
         assert (balance == 1000);
     });
+})
