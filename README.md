@@ -1,4 +1,4 @@
-Ethereum Web3 Project for BlockChain Development Course on Start2Impact.
+Ethereum Web3 Project - Start2Token - Example of an ICO ERC20 Token.
 
 Steps:
 
